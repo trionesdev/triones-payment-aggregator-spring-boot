@@ -40,15 +40,7 @@
         </dependency>
         <dependency>
             <groupId>com.trionesdev.payment</groupId>
-            <artifactId>triones-aggregated-payment-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.trionesdev.payment</groupId>
-            <artifactId>triones-aggregated-payment-wechatpay</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.trionesdev.payment</groupId>
-            <artifactId>triones-wechatpay-spring-boot-starter</artifactId>
+            <artifactId>aggregated-payment-wechatpay</artifactId>
         </dependency>
 
         <dependency>

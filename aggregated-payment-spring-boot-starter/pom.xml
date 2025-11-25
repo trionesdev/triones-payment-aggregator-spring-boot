@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.trionesdev.payment</groupId>
-            <artifactId>triones-aggregated-payment-core</artifactId>
+            <artifactId>aggregated-payment-core</artifactId>
         </dependency>
     </dependencies>
 

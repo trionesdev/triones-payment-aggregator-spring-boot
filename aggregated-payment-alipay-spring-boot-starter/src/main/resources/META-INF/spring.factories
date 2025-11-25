@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.trionesdev.payment.aggregated.spring.boot.starter.rest.alipay.AlipayRestAutoConfiguration
+com.trionesdev.payment.aggregated.alipay.rest.autoconfigure.AlipayAutoConfiguration
