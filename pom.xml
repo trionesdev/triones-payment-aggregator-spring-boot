@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.trionesdev.payment</groupId>
-    <artifactId>aggregated-payment-spring-boot-starters</artifactId>
+    <artifactId>aggregate-payment-spring-boot</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Triones:AggregatedPayment:SpringBootStarters</name>
+    <name>Triones:AggregatePayment:SpringBoot</name>
     <modules>
-        <module>aggregated-payment-spring-boot-dependencies</module>
-        <module>spring-boot-starter</module>
+        <module>aggregate-payment-spring-boot-dependencies</module>
+        <module>aggregate-payment-spring-boot-starters</module>
     </modules>
 
     <properties>
@@ -21,6 +21,18 @@
         <kotlin.version>2.1.21</kotlin.version>
     </properties>
 
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>3.3.5</version>
+                <scope>import</scope>
+                <type>pom</type>
+                <optional>true</optional>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 
     <repositories>
