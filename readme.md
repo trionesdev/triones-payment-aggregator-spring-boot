@@ -1,8 +1,8 @@
 # TrionesDev Aggregated Payment Spring Boot Starters
 > TrionesDev 聚合支付 Spring Boot 集成
  
-- [aggregated-payment-alipay-spring-boot-starter](spring-boot-starter/aggregated-payment-alipay-spring-boot-starter) 支付宝支付
-- [aggregated-payment-wechatpay-spring-boot-starter](spring-boot-starter/aggregated-payment-wechatpay-spring-boot-starter) 微信支付
+- [aggregate-payment-alipay-spring-boot-starter](aggregate-payment-spring-boot-starters/aggregate-payment-alipay-spring-boot-starter) 支付宝支付
+- [aggregate-payment-wechatpay-spring-boot-starter](aggregate-payment-spring-boot-starters/aggregate-payment-wechatpay-spring-boot-starter) 微信支付
 
 #### 互相吹捧，共同进步
 
