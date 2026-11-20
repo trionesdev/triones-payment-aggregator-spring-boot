@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.trionesdev.payment</groupId>
-    <artifactId>aggregate-payment-spring-boot</artifactId>
+    <artifactId>payment-aggregator-spring-boot</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Triones:AggregatePayment:SpringBoot</name>
     <modules>
-        <module>aggregate-payment-spring-boot-dependencies</module>
-        <module>aggregate-payment-spring-boot-starters</module>
+        <module>payment-aggregator-spring-boot-dependencies</module>
+        <module>payment-aggregator-spring-boot-starters</module>
     </modules>
 
     <properties>
