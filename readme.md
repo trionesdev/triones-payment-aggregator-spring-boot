@@ -13,7 +13,7 @@ TrionesDev 聚合支付 Spring Boot 集成，为支付宝、微信支付提供�
 | [spring-boot-starter-payment-aggregator-alipay](payment-aggregator-spring-boot-starters/spring-boot-starter-payment-aggregator-alipay) | 支付宝渠道、客户端配置和通知入口 |
 | [spring-boot-starter-payment-aggregator-wechatpay](payment-aggregator-spring-boot-starters/spring-boot-starter-payment-aggregator-wechatpay) | 微信支付渠道、配置转换和支付／退款／转账通知入口 |
 
-统一入口提供创建订单、关闭订单、创建退款和创建转账四种操作；具体渠道支持的业务场景及请求字段由底层 `aggregate-payment-*` 依赖决定。
+统一入口提供创建订单、关闭订单、创建退款和创建转账四种操作；具体渠道支持的业务场景及请求字段由底层 `payment-aggregator-*` 依赖决定。
 
 ## 环境要求
 
@@ -59,7 +59,7 @@ TrionesDev 聚合支付 Spring Boot 集成，为支付宝、微信支付提供�
 </dependencies>
 ```
 
-可以删除不使用的渠道依赖。当前 BOM 引入的底层 BOM 为 `aggregate-payment-dependencies:0.0.2-SNAPSHOT`。若需要解析快照依赖，可使用项目 POM 中配置的仓库；以下配置应放入业务项目的 `<project>` 下：
+可以删除不使用的渠道依赖。当前 BOM 引入的底层 BOM 为 `payment-aggregator-dependencies:0.0.2-SNAPSHOT`。若需要解析快照依赖，可使用项目 POM 中配置的仓库；以下配置应放入业务项目的 `<project>` 下：
 
 ```xml
 <repositories>
@@ -77,6 +77,18 @@ TrionesDev 聚合支付 Spring Boot 集成，为支付宝、微信支付提供�
 ```
 
 版本号来自当前源码，不代表已验证远程仓库存在对应制品。也可以先在本地执行 `mvn clean install` 安装本项目模块；底层依赖仍需能够解析。
+
+## 自动配置
+
+三个 Starter 均在 `META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports` 中声明自动配置入口，并保留 `META-INF/spring.factories` 注册信息。当前入口已与源码包名同步：
+
+| Starter | 自动配置类 | 装配条件与内容 |
+| --- | --- | --- |
+| 统一入口 | `com.trionesdev.payment.aggregator.autoconfigure.PaymentAggregatorAutoConfiguration` | 收集 `PaymentChannel` Bean，注册 `PaymentAggregatorFactory` |
+| 支付宝 | `com.trionesdev.payment.aggregator.alipay.autoconfigure.AlipayAutoConfiguration` | `triones.payment.alipay.enabled=true` 时注册 `Alipay`、`AlipayChannel` 并导入通知 Controller |
+| 微信支付 | `com.trionesdev.payment.aggregator.wechatpay.autoconfigure.WechatPayAutoConfiguration` | `triones.payment.wechatpay.enabled=true` 时注册 `WechatPayChannel` 并导入通知 Controller |
+
+业务项目通过 Spring Boot 自动配置加载这些入口，无需手动扫描 Starter 包。统一工厂的 Bean 名称为 `aggregatedPaymentFactory`，可以按 `PaymentAggregatorFactory` 类型注入。微信客户端装配仍需补齐，见文末说明。
 
 ## 渠道配置
 
@@ -148,8 +160,8 @@ triones:
 
 ```java
 import com.trionesdev.payment.aggregator.autoconfigure.PaymentAggregatorFactory;
-import com.trionesdev.payment.aggregate.shared.model.CreateOrderRequest;
-import com.trionesdev.payment.aggregate.shared.model.CreateOrderResponse;
+import com.trionesdev.payment.aggregator.shared.model.CreateOrderRequest;
+import com.trionesdev.payment.aggregator.shared.model.CreateOrderResponse;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -174,7 +186,7 @@ public class PaymentService {
 | `createRefund` | `CreateRefundRequest` | `CreateRefundResponse` |
 | `createTransfer` | `CreateTransferRequest` | `CreateTransferResponse` |
 
-请求／响应模型位于 `com.trionesdev.payment.aggregate.shared.model`。工厂收集 Spring 容器中的 `AggregatePaymentChannel`，以渠道类上 `@PaymentComponent` 的 `channel` 值建立映射，并按请求的 `channel` 路由。渠道标识请以底层实现的注解值为准。
+请求／响应模型位于 `com.trionesdev.payment.aggregator.shared.model`。工厂收集 Spring 容器中的 `PaymentChannel`，以渠道类上 `@PaymentComponent` 的 `channel` 值建立映射，并按请求的 `channel` 路由。渠道标识请以底层实现的注解值为准。
 
 当前实现对请求渠道和查找结果使用非空断言；`channel` 为空或渠道未注册会导致异常。业务层应在调用前校验渠道与参数。
 
@@ -192,7 +204,7 @@ public class PaymentService {
 
 微信通知入口接收原始请求体和 `Wechatpay-Nonce`、`Wechatpay-Signature`、`Wechatpay-Timestamp`、`Wechatpay-Serial` 四个请求头，传给底层渠道处理。正常返回包含 `code: SUCCESS` 的对象；处理异常时调用 `sendError` 返回 HTTP 500。
 
-业务通知扩展点为 `com.trionesdev.payment.aggregate.AggregatePaymentNotifyCallback`。如需更新业务订单，实现底层依赖中该接口并注册为 Spring Bean；渠道装配时通过 `ObjectProvider` 获取回调实现。接口方法签名以实际依赖版本为准。
+业务通知扩展点为 `com.trionesdev.payment.aggregator.PaymentNotifyCallback`。如需更新业务订单，实现底层依赖中该接口并注册为 Spring Bean；渠道装配时通过 `ObjectProvider` 获取回调实现。接口方法签名以实际依赖版本为准。
 
 通知地址应允许支付平台访问，应用鉴权和 CSRF 配置需适配这些入口。业务处理应校验订单信息并保证幂等，验签及解密行为应结合底层渠道实现确认。
 
@@ -200,10 +212,9 @@ public class PaymentService {
 
 当前源码存在以下限制，以上配置模板尚不能视为已通过端到端验证的接入方案：
 
-1. 两个渠道模块的 `spring.factories` 和 `AutoConfiguration.imports` 仍引用 `com.trionesdev.payment.aggregated.*`，实际源码包名为 `com.trionesdev.payment.aggregator.*`，自动配置入口需要同步。
-2. `AlipayPayProperties`、`WechatPayProperties` 使用初始化为 `null` 的只读 `val` 属性，未提供构造绑定参数或 setter，需完善属性绑定后验证 YAML 配置能正确注入。
-3. 微信模块提供 `wxPayConfig()` 配置转换方法，但当前未将其声明为 Bean，也未声明创建 `WechatPay` 客户端的 Bean。接入时需补齐客户端装配，确保渠道获取到可用客户端。
-4. 支付宝 `notify-urls` 和微信 `transfer-notify-urls` 当前未在自动配置中传递；支付宝应用网关入口尚未实现业务处理。
+1. `AlipayPayProperties`、`WechatPayProperties` 使用初始化为 `null` 的只读 `val` 属性，未提供构造绑定参数或 setter，需完善属性绑定后验证 YAML 配置能正确注入。
+2. 微信模块提供 `wxPayConfig()` 配置转换方法，但当前未将其声明为 Bean，也未声明创建 `WechatPay` 客户端的 Bean。接入时需补齐客户端装配，确保渠道获取到可用客户端。
+3. 支付宝 `notify-urls` 和微信 `transfer-notify-urls` 当前未在自动配置中传递；支付宝应用网关入口尚未实现业务处理。
 
 ## 本地构建
 

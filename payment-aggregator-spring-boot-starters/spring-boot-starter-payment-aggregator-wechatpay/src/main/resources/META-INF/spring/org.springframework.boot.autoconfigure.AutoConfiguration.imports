@@ -1,1 +1,1 @@
-com.trionesdev.payment.aggregated.wechatpay.autoconfigure.WechatPayAutoConfiguration
+com.trionesdev.payment.aggregator.wechatpay.autoconfigure.WechatPayAutoConfiguration

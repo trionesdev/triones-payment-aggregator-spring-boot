@@ -1,1 +1,1 @@
-com.trionesdev.payment.aggregated.alipay.rest.autoconfigure.AlipayAutoConfiguration
+com.trionesdev.payment.aggregator.alipay.autoconfigure.AlipayAutoConfiguration

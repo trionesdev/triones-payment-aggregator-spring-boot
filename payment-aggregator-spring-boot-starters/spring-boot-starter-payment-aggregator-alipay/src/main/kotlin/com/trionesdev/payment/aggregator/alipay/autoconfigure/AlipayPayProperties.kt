@@ -1,4 +1,4 @@
-package com.trionesdev.payment.aggregator.alipay.rest.autoconfigure
+package com.trionesdev.payment.aggregator.alipay.autoconfigure
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 
