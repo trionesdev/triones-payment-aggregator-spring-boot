@@ -22,7 +22,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.trionesdev.payment</groupId>
-                <artifactId>aggregate-payment-dependencies</artifactId>
+                <artifactId>payment-aggregator-dependencies</artifactId>
                 <version>0.0.2-SNAPSHOT</version>
                 <scope>import</scope>
                 <type>pom</type>

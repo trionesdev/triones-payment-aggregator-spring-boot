@@ -8,7 +8,7 @@
     <artifactId>payment-aggregator-spring-boot</artifactId>
     <version>3.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Triones:AggregatePayment:SpringBoot</name>
+    <name>Triones:PaymentAggregator:SpringBoot</name>
     <modules>
         <module>payment-aggregator-spring-boot-dependencies</module>
         <module>payment-aggregator-spring-boot-starters</module>

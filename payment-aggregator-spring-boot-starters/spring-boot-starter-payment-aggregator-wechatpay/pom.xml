@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>com.trionesdev.payment</groupId>
-            <artifactId>aggregate-payment-wechatpay</artifactId>
+            <artifactId>payment-aggregator-wechatpay</artifactId>
         </dependency>
 
         <dependency>

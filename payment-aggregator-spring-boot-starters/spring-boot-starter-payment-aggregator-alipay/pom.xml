@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>com.trionesdev.payment</groupId>
-            <artifactId>aggregate-payment-alipay</artifactId>
+            <artifactId>payment-aggregator-alipay</artifactId>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
