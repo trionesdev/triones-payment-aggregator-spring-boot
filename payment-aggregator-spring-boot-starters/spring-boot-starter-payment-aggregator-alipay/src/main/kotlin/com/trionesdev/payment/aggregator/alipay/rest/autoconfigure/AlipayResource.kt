@@ -1,6 +1,6 @@
 package com.trionesdev.payment.aggregator.alipay.rest.autoconfigure
 
-import com.trionesdev.payment.aggregate.alipay.AlipayAggregatedPaymentChannel
+import com.trionesdev.payment.aggregator.alipay.AlipayChannel
 import jakarta.servlet.http.HttpServletRequest
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("rest-api/payment/alipay")
-class AlipayResource(var alipayAggregatedPaymentChannel: AlipayAggregatedPaymentChannel) {
+class AlipayResource(var alipayChannel: AlipayChannel) {
     val logger: Logger? = LoggerFactory.getLogger(AlipayResource::class.java)
 
     /**
@@ -22,7 +22,7 @@ class AlipayResource(var alipayAggregatedPaymentChannel: AlipayAggregatedPayment
     ): String {
         val tradeStatus = request.getParameter("trade_status")
         if ("TRADE_SUCCESS" == tradeStatus) {
-            alipayAggregatedPaymentChannel.transactionNotify(request.parameterMap)
+            alipayChannel.transactionNotify(request.parameterMap)
             return "success"
         }
         return "fail"

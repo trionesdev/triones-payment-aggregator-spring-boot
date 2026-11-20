@@ -1,21 +1,21 @@
 package com.trionesdev.payment.aggregator.autoconfigure
 
-import com.trionesdev.payment.aggregate.AggregatePaymentChannel
-import com.trionesdev.payment.aggregate.PaymentComponent
-import com.trionesdev.payment.aggregate.shared.model.*
+import com.trionesdev.payment.aggregator.PaymentChannel
+import com.trionesdev.payment.aggregator.PaymentComponent
+import com.trionesdev.payment.aggregator.shared.model.*
 import jakarta.annotation.PostConstruct
 import org.apache.commons.collections4.CollectionUtils
 import org.springframework.core.annotation.AnnotationUtils
 
 
-class PaymentAggregatorFactory(var aggregatedPaymentChannels: MutableList<AggregatePaymentChannel>) {
+class PaymentAggregatorFactory(var paymentChannels: MutableList<PaymentChannel>) {
 
-    var channelsMap: MutableMap<String, AggregatePaymentChannel> = HashMap()
+    var channelsMap: MutableMap<String, PaymentChannel> = HashMap()
 
     @PostConstruct
     fun init() {
-        if (CollectionUtils.isNotEmpty(aggregatedPaymentChannels)) {
-            for (payment in aggregatedPaymentChannels) {
+        if (CollectionUtils.isNotEmpty(paymentChannels)) {
+            for (payment in paymentChannels) {
                 val paymentComponent =
                     AnnotationUtils.getAnnotation(payment.javaClass, PaymentComponent::class.java)
                 paymentComponent?.let { component ->

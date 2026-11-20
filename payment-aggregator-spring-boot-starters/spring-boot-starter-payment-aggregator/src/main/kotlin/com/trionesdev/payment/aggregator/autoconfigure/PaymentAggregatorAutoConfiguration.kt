@@ -1,6 +1,6 @@
 package com.trionesdev.payment.aggregator.autoconfigure
 
-import com.trionesdev.payment.aggregate.AggregatePaymentChannel
+import com.trionesdev.payment.aggregator.PaymentChannel
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -8,8 +8,8 @@ import org.springframework.context.annotation.Configuration
 class PaymentAggregatorAutoConfiguration {
 
     @Bean
-    fun aggregatedPaymentFactory(aggregatedPaymentChannels: MutableList<AggregatePaymentChannel>): PaymentAggregatorFactory {
-        return PaymentAggregatorFactory(aggregatedPaymentChannels)
+    fun aggregatedPaymentFactory(paymentChannels: MutableList<PaymentChannel>): PaymentAggregatorFactory {
+        return PaymentAggregatorFactory(paymentChannels)
     }
 
 }

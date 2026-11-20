@@ -1,7 +1,7 @@
 package com.trionesdev.payment.aggregator.alipay.rest.autoconfigure
 
-import com.trionesdev.payment.aggregate.AggregatePaymentNotifyCallback
-import com.trionesdev.payment.aggregate.alipay.AlipayAggregatedPaymentChannel
+import com.trionesdev.payment.aggregator.PaymentNotifyCallback
+import com.trionesdev.payment.aggregator.alipay.AlipayChannel
 import com.trionesdev.payment.alipay.v3.Alipay
 import com.trionesdev.payment.alipay.v3.AlipayConfig
 import lombok.extern.slf4j.Slf4j
@@ -45,8 +45,8 @@ class AlipayAutoConfiguration(
     @Bean
     fun alipayService(
         alipay: ObjectProvider<Alipay>,
-        aggregatedPaymentNotify: ObjectProvider<AggregatePaymentNotifyCallback>,
-    ): AlipayAggregatedPaymentChannel {
-        return AlipayAggregatedPaymentChannel(alipay.getIfAvailable(), aggregatedPaymentNotify.getIfAvailable())
+        aggregatedPaymentNotify: ObjectProvider<PaymentNotifyCallback>,
+    ): AlipayChannel {
+        return AlipayChannel(alipay.getIfAvailable(), aggregatedPaymentNotify.getIfAvailable())
     }
 }

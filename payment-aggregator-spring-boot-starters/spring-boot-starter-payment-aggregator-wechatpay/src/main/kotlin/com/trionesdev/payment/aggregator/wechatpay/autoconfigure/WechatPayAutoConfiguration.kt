@@ -1,10 +1,9 @@
 package com.trionesdev.payment.aggregator.wechatpay.autoconfigure
 
-import com.trionesdev.payment.aggregate.AggregatePaymentNotifyCallback
-import com.trionesdev.payment.aggregate.wechatpay.WechatPayAggregatePaymentChannel
+import com.trionesdev.payment.aggregator.PaymentNotifyCallback
+import com.trionesdev.payment.aggregator.wechatpay.WechatPayChannel
 import com.trionesdev.payment.wechatpay.v3.WechatPay
 import com.trionesdev.payment.wechatpay.v3.WechatPayConfig
-import lombok.RequiredArgsConstructor
 import lombok.extern.slf4j.Slf4j
 import org.apache.commons.lang3.StringUtils
 import org.springframework.beans.factory.ObjectProvider
@@ -17,7 +16,6 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Slf4j
-@RequiredArgsConstructor
 @Configuration
 @ConditionalOnProperty(prefix = "triones.payment.wechatpay", value = ["enabled"], havingValue = "true")
 @EnableConfigurationProperties(value = [WechatPayProperties::class])
@@ -56,8 +54,8 @@ class WechatPayAutoConfiguration(
     @Bean
     fun wechatPayService(
         wechatpay: ObjectProvider<WechatPay>,
-        aggregatedPaymentNotify: ObjectProvider<AggregatePaymentNotifyCallback>,
-    ): WechatPayAggregatePaymentChannel {
-        return WechatPayAggregatePaymentChannel(wechatpay.ifAvailable, aggregatedPaymentNotify.ifAvailable)
+        aggregatedPaymentNotify: ObjectProvider<PaymentNotifyCallback>,
+    ): WechatPayChannel {
+        return WechatPayChannel(wechatpay.ifAvailable, aggregatedPaymentNotify.ifAvailable)
     }
 }

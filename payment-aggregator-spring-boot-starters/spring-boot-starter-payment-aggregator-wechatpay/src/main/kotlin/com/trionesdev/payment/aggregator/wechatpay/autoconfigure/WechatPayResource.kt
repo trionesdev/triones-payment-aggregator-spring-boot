@@ -1,6 +1,6 @@
 package com.trionesdev.payment.aggregator.wechatpay.autoconfigure
 
-import com.trionesdev.payment.aggregate.wechatpay.WechatPayAggregatePaymentChannel
+import com.trionesdev.payment.aggregator.wechatpay.WechatPayChannel
 import com.trionesdev.payment.util.GsonUtils
 import com.trionesdev.payment.wechatpay.v3.payment.model.notify.WechatPayNotifyParseRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("rest-api/payment/wechatpay")
 class WechatPayResource(
-    var wechatPayAggregatePayment: WechatPayAggregatePaymentChannel
+    var wechatPayPayment: WechatPayChannel
 ) {
     val logger: Logger? = LoggerFactory.getLogger(WechatPayResource::class.java)
 
@@ -29,7 +29,7 @@ class WechatPayResource(
         @RequestBody body: String
     ): TransactionNotifyVO {
         try {
-            wechatPayAggregatePayment.transactionNotify(WechatPayNotifyParseRequest().apply {
+            wechatPayPayment.transactionNotify(WechatPayNotifyParseRequest().apply {
                 this.nonce = nonce
                 this.signature = signature
                 this.timestamp = timestamp
@@ -63,7 +63,7 @@ class WechatPayResource(
         response: HttpServletResponse,
     ): TransactionNotifyVO {
         try {
-            wechatPayAggregatePayment.refundNotify(
+            wechatPayPayment.refundNotify(
                 WechatPayNotifyParseRequest().apply {
                     this.nonce = nonce
                     this.signature = signature
@@ -101,7 +101,7 @@ class WechatPayResource(
     ): TransactionNotifyVO {
 
         try {
-            wechatPayAggregatePayment.transferNotify(
+            wechatPayPayment.transferNotify(
                 WechatPayNotifyParseRequest().apply {
                     this.nonce = nonce
                     this.signature = signature
